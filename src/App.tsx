@@ -7,13 +7,15 @@ import Footer from './components/footer/Footer';
 
 function App() {
   return (
-    <main className="bg-yellow-500">
+    <div className="flex flex-col bg-yellow-500 h-svh">
       <Header />
-      <BrowserRouter>
-        <Router />
-      </BrowserRouter>
+      <main className="flex-1 min-h-[calc(100vh-4rem-6rem)] bg-green-300">
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }
 
