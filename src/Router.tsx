@@ -1,11 +1,14 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import App from "./App";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
 const Router = () => {
     return (
         <Routes>
-            <Route path="*" element={<App />} />
+            <Route path="*" element={<Navigate to="/home" replace />} />
+            <Route path="home" element={<Home />} />
+            <Route path="dashboard" element={<Dashboard />} />
         </Routes>
     )
 }
