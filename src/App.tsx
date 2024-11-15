@@ -7,9 +7,9 @@ import Footer from './components/footer/Footer';
 
 function App() {
   return (
-    <div className="flex flex-col bg-yellow-500 h-svh">
-      <Header />
-      <main className="flex-1 min-h-[calc(100vh-4rem-6rem)] bg-green-300">
+    <div className="flex flex-col bg-gray-200 h-svh">
+      {/* <Header /> */}
+      <main className="flex flex-col flex-1 min-h-[calc(100vh-4rem-6rem)]">
         <BrowserRouter>
           <Router />
         </BrowserRouter>
