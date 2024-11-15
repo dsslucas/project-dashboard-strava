@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import ImagePoweredStrava from "../../assets/images/strava/api_logo_pwrdBy_strava_horiz_light.png";
+import H1 from "../h1/H1";
 
 const Navbar = () => {
     const [isHidden, setIsHidden] = useState(true);
@@ -40,20 +41,18 @@ const Navbar = () => {
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                                <a href="#" className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
+                                <a href="/dashboard" className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Dashboard</a>
                                 <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Logout</a>
                             </div>
                         </div>
                     </div>
                     <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="hidden sm:ml-6 sm:block">
-                            <h1 className="text-white font-2xl uppercase font-sans font-bold">Strava Dashboard Project</h1>
+                            <H1 text2xl uppercase fontBold textCenter textOrange>Strava Dashboard Project</H1>
                         </div>
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <img src={ImagePoweredStrava} className="w-64" />
-
-
+                        <img src={ImagePoweredStrava} className="w-64" alt="strava-logo"/>
                     </div>
                 </div>
             </div>
@@ -66,8 +65,8 @@ const Navbar = () => {
             >
                 <div className="space-y-1 px-2 pb-3 pt-2">
                     {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
-                    <h1 className="text-white font-2xl uppercase font-sans font-bold text-center">Strava Dashboard Project</h1>
-                    <a href="#" className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+                    <H1 text2xl uppercase fontBold textCenter textOrange>Strava Dashboard Project</H1>
+                    <a href="/dashboard" className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
                     <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Logout</a>
                 </div>
             </div>
