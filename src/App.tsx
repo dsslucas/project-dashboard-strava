@@ -1,15 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './Router';
+import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
 
 function App() {
   return (
-    <main>
+    <main className="bg-yellow-500">
+      <Header />
       <BrowserRouter>
         <Router />
       </BrowserRouter>
+      <Footer />
     </main>
   );
 }
