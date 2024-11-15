@@ -11,15 +11,15 @@ const A: React.FC<Props> = (props: Props) => {
     var className = "";
 
     if (!props.isNavbar) {
-        className = "underline";
-        if (props.textOrange) className += "text-[#FC4C02]";
+        className = "underline ";
+        if (props.textOrange) className += "text-[#FC4C02] ";
     }
 
     return <a
         href={props.href}
         target="_blank"
         rel="noreferrer"
-        className={className}
+        className={className.trim()}
     >
         {props.text}
     </a>

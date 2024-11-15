@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="flex flex-col bg-gray-200 h-svh">
       <Header />
-      <main className="flex flex-col flex-1 min-h-[calc(100vh-4rem-6rem)]">
+      <main className="flex flex-col min-h-[calc(100vh-4rem-6rem)] xs:p-1.5 gap-2 overflow-y-auto">
         <BrowserRouter>
           <Router />
         </BrowserRouter>

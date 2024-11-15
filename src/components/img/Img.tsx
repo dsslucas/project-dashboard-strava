@@ -4,6 +4,7 @@ interface Props {
     alt: string;
     image: string;
     height12?: boolean;
+    
 }
 
 const Img: React.FC<Props> = (props: Props) => {
