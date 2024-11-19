@@ -67,6 +67,7 @@ const Dashboard = () => {
     const currentDate = new Date();
     const [selectedMonth, setSelectedMonth] = useState<string>((currentDate.getMonth() + 1).toString().padStart(2, '0'));
     const [selectedYear, setSelectedYear] = useState<number>(currentDate.getFullYear());
+    const [isMonthYearCurrent, setIsMonthYearCurrent] = useState<boolean>(true);
 
     //const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
     const years = Array.from({ length: selectedYear - 2019 + 1 }, (_, i) => selectedYear - i);
@@ -92,8 +93,17 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
+        console.log("DATA ATUAL: ", currentDate);
+        console.log("ESTADO: SELECTED MONTH ", selectedMonth)
+        console.log("ESTADO: SELECTED YEAR ", selectedYear)
+
+        const compareMonth = (currentDate.getMonth() + 1) === Number(selectedMonth);
+        const compareYear = (currentDate.getFullYear()) === Number(selectedYear);
+
+        setIsMonthYearCurrent(compareMonth && compareYear);
+
         console.log("TIVE ALTERAÇÃO")
-    }, [selectedYear]);
+    }, [selectedMonth, selectedYear]);
 
     return (
         <>
@@ -267,21 +277,23 @@ const Dashboard = () => {
 
                 <Divider flex flexCol>
                     <Divider flex flexWrap justifyBetween widthFull textCenter>
-                        <Button type="button" onClick={() => renderDateByOption("week")} width25Percent hoverGray300>
-                            <Divider flex flexCol>
-                                <Span textGray500>This week</Span>
-                                <Span fontBold>{api.activitiesLastWeek.length}</Span>
-                            </Divider>
-                        </Button>
+                        {isMonthYearCurrent && (
+                            <Button type="button" onClick={() => renderDateByOption("week")} width25Percent hoverGray300>
+                                <Divider flex flexCol>
+                                    <Span textGray500>This week</Span>
+                                    <Span fontBold>{api.activitiesLastWeek.length}</Span>
+                                </Divider>
+                            </Button>
+                        )}
 
-                        <Button type="button" onClick={() => renderDateByOption("fourWeeks")} width25Percent hoverGray300>
+                        <Button type="button" onClick={() => renderDateByOption("month")} width25Percent hoverGray300>
                             <Divider flex flexCol>
-                                <Span textGray500>Last 4 weeks</Span>
+                                <Span textGray500>This month</Span>
                                 <Span fontBold>{api.activitiesLastFourWeeks.length}</Span>
                             </Divider>
                         </Button>
 
-                        <Button type="button" onClick={() => renderDateByOption("fourYears")} width25Percent hoverGray300>
+                        <Button type="button" onClick={() => renderDateByOption("years")} width25Percent hoverGray300>
                             <Divider flex flexCol>
                                 <Span textGray500>This year</Span>
                                 <Span fontBold>{api.activitiesAllYear.length}</Span>
