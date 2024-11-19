@@ -39,6 +39,8 @@ interface Bikes {
     distance: number;
 }
 
+const currentDate = new Date();
+
 const Dashboard = () => {
     console.log("API: ", api.activitiesLastWeek)
     const infoUser = api.infoAfterLogin;
@@ -65,13 +67,14 @@ const Dashboard = () => {
         setIsShoesOpen((prev: boolean) => !prev);
     }
 
-    const currentDate = new Date();
     const [selectedMonth, setSelectedMonth] = useState<string>((currentDate.getMonth() + 1).toString().padStart(2, '0'));
     const [selectedYear, setSelectedYear] = useState<number>(currentDate.getFullYear());
+
+    const [years, setYears] = useState<string[]>([]);
     const [isMonthYearCurrent, setIsMonthYearCurrent] = useState<boolean>(true);
 
     //const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
-    const years = Array.from({ length: selectedYear - 2019 + 1 }, (_, i) => selectedYear - i);
+    //const years = Array.from({ length: selectedYear - 2019 + 1 }, (_, i) => selectedYear - i);
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedMonth(event.target.value);
@@ -94,6 +97,15 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
+        // Generate the years list
+        const yearsGenerated = Array.from(
+            { length: currentDate.getFullYear() - 2020 + 1 },
+            (_, index) => (2020 + index).toString()
+          ).reverse();
+          setYears(yearsGenerated);
+    }, []);
+
+    useEffect(() => {
         console.log("DATA ATUAL: ", currentDate);
         console.log("ESTADO: SELECTED MONTH ", selectedMonth)
         console.log("ESTADO: SELECTED YEAR ", selectedYear)
@@ -102,8 +114,6 @@ const Dashboard = () => {
         const compareYear = (currentDate.getFullYear()) === Number(selectedYear);
 
         setIsMonthYearCurrent(compareMonth && compareYear);
-
-        console.log("TIVE ALTERAÇÃO");
 
         getAllActivities(Number(selectedMonth), Number(selectedYear), compareMonth && compareYear);
     }, [selectedMonth, selectedYear]);
