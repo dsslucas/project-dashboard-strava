@@ -13,9 +13,37 @@ import Button from "../components/button/Button";
 import Label from "../components/label/Label";
 import constants from "../common/constants";
 import Select from "../components/select/Select";
+import { info } from "console";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+
 
 interface YearSelectProps {
     onChange: (year: number) => void;
+}
+
+interface Club {
+    id: number;
+    name: string;
+    profile: string;
+    activity_types: string[];
+    city: string;
+    state: string;
+    country: string;
+    url: string;
+}
+
+interface Shoes {
+    id: string;
+    name: string;
+    converted_distance: number;
+    retired: boolean;
+}
+
+interface Bikes {
+    id: string;
+    name: string;
+    distance: number;
 }
 
 const Dashboard = () => {
@@ -24,6 +52,23 @@ const Dashboard = () => {
     const existsDataLastWeek = Array.isArray(api.activitiesLastWeek);
     const existsDataLastFourWeeks = Array.isArray(api.activitiesLastFourWeeks);
     const existsDataCurrentYear = Array.isArray(api.activitiesAllYear);
+
+    // Dropdown of events
+    const [isBikesOpen, setIsBikesOpen] = useState<boolean>(false);
+    const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
+    const [isShoesOpen, setIsShoesOpen] = useState<boolean>(false);
+
+    const toggleDropdownBikes = () => {
+        setIsBikesOpen((prev: boolean) => !prev);
+    }
+
+    const toggleDropdownClub = () => {
+        setIsClubOpen((prev: boolean) => !prev);
+    };
+
+    const toggleDropdownShoes = () => {
+        setIsShoesOpen((prev: boolean) => !prev);
+    }
 
     const currentDate = new Date();
     const [selectedMonth, setSelectedMonth] = useState<string>((currentDate.getMonth() + 1).toString().padStart(2, '0'));
@@ -96,6 +141,121 @@ const Dashboard = () => {
                     </div>
                 </div>
             </Section>
+
+            {Array.isArray(infoUser.bikes) && infoUser.bikes.length > 0 && (
+                <Section flex flexCol sectionInfos>
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                            <H1 fontBold>Bikes</H1>
+                        </div>
+                        <div className="flex gap-x-3">
+                            <Span>({infoUser.bikes.length})</Span>
+                            <button
+                                onClick={toggleDropdownBikes}
+                                className="hover:underline fa-solid fa-chevron-up"
+                            >
+                                {isBikesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        className={`transition-all duration-300 ${isBikesOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+                            } overflow-hidden`}
+                    >
+                        <div className="flex xs:flex-col gap-2 mt-4">
+                            <div>
+                                {infoUser.bikes.map((element: Bikes, key: number) => {
+                                    return <article className="flex justify-between" key={key}>
+                                        <Span>{element.name}</Span>
+                                        <Span>{element.distance.toLocaleString("pt-br")} km</Span>
+                                    </article>
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </Section>
+            )}
+
+            {Array.isArray(infoUser.clubs) && infoUser.clubs.length > 0 && (
+                <Section flex flexCol sectionInfos>
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                            <H1 fontBold>Clubs</H1>
+                        </div>
+                        <div className="flex gap-x-3">
+                            <Span>({infoUser.clubs.length})</Span>
+                            <button
+                                onClick={toggleDropdownClub}
+                                className="hover:underline fa-solid fa-chevron-up"
+                            >
+                                {isClubOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+                            </button>
+                        </div>
+
+                    </div>
+                    <div
+                        className={`transition-all duration-300 ${isClubOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+                            } overflow-hidden`}
+                    >
+                        <div className="flex xs:flex-col gap-2 mt-4">
+                            {infoUser.clubs.map((element: Club, key: number) => (
+                                <article className="flex justify-between gap-2" key={key}>
+                                    <div className="flex flex-col xs:w-1/4">
+                                        <figure className="w-full">
+                                            <Img image={element.profile} alt="club-image" />
+                                        </figure>
+                                    </div>
+                                    <div className="flex flex-col xs:w-3/4">
+                                        <H5 fontBold>{element.name}</H5>
+                                        <Span location>
+                                            {element.city}, {element.state}, {element.country}
+                                        </Span>
+                                        <A
+                                            href={`https://www.strava.com/clubs/${element.url}`}
+                                            textOrange
+                                            text="View on Strava"
+                                        />
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+            )}
+
+            {Array.isArray(infoUser.shoes) && infoUser.shoes.length > 0 && (
+                <Section flex flexCol sectionInfos>
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                            <H1 fontBold>Shoes</H1>
+                        </div>
+                        <div className="flex gap-x-3">
+                            <Span>({infoUser.shoes.length})</Span>
+                            <button
+                                onClick={toggleDropdownShoes}
+                                className="hover:underline fa-solid fa-chevron-up"
+                            >
+                                {isShoesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        className={`transition-all duration-300 ${isShoesOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+                            } overflow-hidden`}
+                    >
+                        <div className="flex xs:flex-col gap-2 mt-4">
+                            <div>
+                                {infoUser.shoes.map((element: Shoes, key: number) => {
+                                    return <article className="flex justify-between" key={key}>
+                                        <Span>{element.name}{element.retired ? " (retired)" : ""}</Span>
+                                        <Span>{element.converted_distance.toLocaleString("pt-br")} km</Span>
+                                    </article>
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </Section>
+            )}
 
             <Section flex flexCol sectionInfos>
                 <div className="flex justify-between items-center">
