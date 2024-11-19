@@ -55,16 +55,10 @@ const Dashboard = () => {
     const [isClubOpen, setIsClubOpen] = useState<boolean>(false);
     const [isShoesOpen, setIsShoesOpen] = useState<boolean>(false);
 
-    const toggleDropdownBikes = () => {
-        setIsBikesOpen((prev: boolean) => !prev);
-    }
-
-    const toggleDropdownClub = () => {
-        setIsClubOpen((prev: boolean) => !prev);
-    };
-
-    const toggleDropdownShoes = () => {
-        setIsShoesOpen((prev: boolean) => !prev);
+    const toggleDropdown = (type: string) => {
+        if(type === "BIKES") setIsBikesOpen((prev: boolean) => !prev);
+        else if(type === "CLUB") setIsClubOpen((prev: boolean) => !prev);
+        else if(type === "SHOES") setIsShoesOpen((prev: boolean) => !prev);
     }
 
     const [selectedMonth, setSelectedMonth] = useState<string>((currentDate.getMonth() + 1).toString().padStart(2, '0'));
@@ -72,9 +66,6 @@ const Dashboard = () => {
 
     const [years, setYears] = useState<string[]>([]);
     const [isMonthYearCurrent, setIsMonthYearCurrent] = useState<boolean>(true);
-
-    //const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
-    //const years = Array.from({ length: selectedYear - 2019 + 1 }, (_, i) => selectedYear - i);
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedMonth(event.target.value);
@@ -84,12 +75,6 @@ const Dashboard = () => {
         const newYear = Number(event.target.value);
         setSelectedYear(newYear);
     };
-
-    // const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     const selectedYear = Number(event.target.value);
-    //     setSelectedYear(selectedYear);
-    //     //onChange(selectedYear);
-    // };
 
     // Choose an option when click
     const renderDateByOption = (type: string) => {
@@ -163,7 +148,7 @@ const Dashboard = () => {
                         </Divider>
                         <Divider flex gapX3>
                             <Span>({infoUser.bikes.length})</Span>
-                            <Button type="button" onClick={toggleDropdownBikes} hoverUnderline>
+                            <Button type="button" onClick={() => toggleDropdown("BIKES")} hoverUnderline>
                                 {isBikesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
                             </Button>
                         </Divider>
@@ -191,7 +176,7 @@ const Dashboard = () => {
                         </Divider>
                         <Divider flex gapX3>
                             <Span>({infoUser.clubs.length})</Span>
-                            <Button type="button" onClick={toggleDropdownClub} hoverUnderline>
+                            <Button type="button" onClick={() => toggleDropdown("CLUB")} hoverUnderline>
                                 {isClubOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
                             </Button>
                         </Divider>
@@ -232,7 +217,7 @@ const Dashboard = () => {
                             </Divider>
                             <Divider flex gapX3>
                                 <Span>({infoUser.shoes.length})</Span>
-                                <Button type="button" onClick={toggleDropdownShoes} hoverUnderline>
+                                <Button type="button" onClick={() => toggleDropdown("SHOES")} hoverUnderline>
                                     {isShoesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
                                 </Button>
                             </Divider>
