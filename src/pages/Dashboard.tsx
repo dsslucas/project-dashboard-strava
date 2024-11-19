@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Section from "../components/section/Section";
 import H1 from "../components/h1/H1";
 import TestImage from "../assets/images/test.jpg"
@@ -8,75 +8,164 @@ import Span from "../components/span/Span";
 import PieChart from "../components/chart/PieChart";
 import H5 from "../components/h5/H5";
 import DashContent from "../components/dashboard/DashContent";
+import api from '../api/constants'
+import Button from "../components/button/Button";
+import Label from "../components/label/Label";
+import constants from "../common/constants";
+import Select from "../components/select/Select";
+
+interface YearSelectProps {
+    onChange: (year: number) => void;
+}
 
 const Dashboard = () => {
+    console.log("API: ", api.activitiesLastWeek)
+    const infoUser = api.infoAfterLogin;
+    const existsDataLastWeek = Array.isArray(api.activitiesLastWeek);
+    const existsDataLastFourWeeks = Array.isArray(api.activitiesLastFourWeeks);
+    const existsDataCurrentYear = Array.isArray(api.activitiesAllYear);
+
+    const currentDate = new Date();
+    const [selectedMonth, setSelectedMonth] = useState<string>((currentDate.getMonth() + 1).toString().padStart(2, '0'));
+    const [selectedYear, setSelectedYear] = useState<number>(currentDate.getFullYear());
+
+    const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+    const years = Array.from({ length: selectedYear - 2019 + 1 }, (_, i) => selectedYear - i);
+
+    const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedMonth(event.target.value);
+    };
+
+    const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newYear = Number(event.target.value);
+        setSelectedYear(newYear);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedYear = Number(event.target.value);
+        setSelectedYear(selectedYear);
+        //onChange(selectedYear);
+    };
+
+    // Choose an option when click
+    const renderDateByOption = (type: string) => {
+        console.log(type)
+    }
+
+    useEffect(() => {
+        console.log("TIVE ALTERAÇÃO")
+    }, [selectedYear]);
+
     return (
         <>
             <Section flex flexCol sectionInfos gap>
                 <div className="flex justify-between">
                     <H1 uppercase fontBold>Athlete data</H1>
-                    <A textOrange text="View on Strava" href="https://www.strava.com/athletes/97961731" />
+                    <A textOrange text="View on Strava" href={`https://www.strava.com/athletes/${infoUser.id}`} />
                 </div>
 
-                <div className="flex xs:flex-col sm:flex-row w-full">
-                    <div className="flex sm:flex-col sm:w-full md:w-1/4 sm:items-center">
+                <div className="flex xs:flex-row w-full gap-2">
+                    <div className="flex xs:w-3/4 md:w-1/4 xs:justify-center">
                         <figure className="w-full">
-                            <Img image={TestImage} alt="profile-image" />
+                            <Img image={infoUser.profile} alt="profile-image" />
                         </figure>
                     </div>
                     <div className="flex flex-col">
                         <div className="flex">
                             <div className="flex flex-1">
-                                <Span fontBold>Lucas Souza</Span>
+                                <Span fontBold>{infoUser.firstname} {infoUser.lastname}</Span>
                             </div>
                         </div>
-
-                        <Span>Um goiano que corre atrás de condicionamento físico, baixar tempo e, às vezes, um ortopedista.</Span>
-                        <Span location>Chiola, Brazil</Span>
+                        <div className="flex">
+                            <Span location>{infoUser.city}, {infoUser.state}, {infoUser.country}</Span>
+                        </div>
                         <div className="flex">
                             <div className="flex gap-3">
                                 <div className="flex gap-x-2">
                                     <Span textGray500>Followers</Span>
-                                    <Span fontBold>10</Span>
+                                    <Span fontBold>{infoUser.follower_count}</Span>
                                 </div>
                                 <Span>|</Span>
                                 <div className="flex gap-x-2">
                                     <Span textGray500>Following</Span>
-                                    <Span fontBold>25</Span>
+                                    <Span fontBold>{infoUser.friend_count}</Span>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col">
-                            <H1 fontBold>Physical activities:</H1>
-                            <div className="grid grid-cols-4 justify-between text-center">
-                                {/* <div className="flex flex-col">
-                                    <Span textGray500>This week</Span>
-                                    <Span fontBold>25</Span>
-                                </div> */}
-                                <div className="flex flex-col">
-                                    <Span textGray500>Last 4 weeks</Span>
-                                    <Span fontBold>25</Span>
-                                </div>
-                                {/* <div className="flex flex-col">
-                                    <Span textGray500>This year</Span>
-                                    <Span fontBold>25</Span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <Span textGray500>Since register</Span>
-                                    <Span fontBold>180</Span>
-                                </div> */}
-                            </div>
-                        </div>
-
+                        <Span>{infoUser.bio}</Span>
                     </div>
                 </div>
             </Section>
+
+            <Section flex flexCol sectionInfos>
+                <div className="flex justify-between items-center">
+                    <H1 fontBold>Physical activities</H1>
+                    <div className="flex gap-x-2 text-center">
+                        <div className="flex flex-col">
+                            <Select
+                                onChange={handleMonthChange}
+                                value={selectedMonth}
+                                textCenter border borderGray400 rounded>
+                                {constants.monthsInText.map((month: string, index: number) => (
+                                    <option key={index} value={(index + 1).toString().padStart(2, '0')}>
+                                        {month}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className="flex flex-col">
+                            <Select
+                                onChange={handleYearChange}
+                                value={selectedYear.toString()}
+                                textCenter border borderGray400 rounded>
+                                {years.map((year) => (
+                                    <option key={year} value={year}>
+                                        {year}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col">
+                    <div className="flex flex-wrap justify-between w-full text-center">
+                        <Button type="button" onClick={() => renderDateByOption("week")} width25Percent hoverGray300>
+                            <div className="flex flex-col">
+                                <Span textGray500>This week</Span>
+                                <Span fontBold>{api.activitiesLastWeek.length}</Span>
+                            </div>
+                        </Button>
+
+                        <Button type="button" onClick={() => renderDateByOption("fourWeeks")} width25Percent hoverGray300>
+                            <div className="flex flex-col">
+                                <Span textGray500>Last 4 weeks</Span>
+                                <Span fontBold>{api.activitiesLastFourWeeks.length}</Span>
+                            </div>
+                        </Button>
+
+                        <Button type="button" onClick={() => renderDateByOption("fourYears")} width25Percent hoverGray300>
+                            <div className="flex flex-col">
+                                <Span textGray500>This year</Span>
+                                <Span fontBold>{api.activitiesAllYear.length}</Span>
+                            </div>
+                        </Button>
+
+                        <Button type="button" onClick={() => renderDateByOption("sinceRegister")} width25Percent hoverGray300>
+                            <div className="flex flex-col">
+                                <Span textGray500>Since register</Span>
+                                <Span fontBold>180</Span>
+                            </div>
+                        </Button>
+                    </div>
+                </div>
+            </Section >
 
             {/* <Section flex flex1 flexCol itemsCenter justifyCenter sectionInfos gap>
                 Exercise Activity Data not found!
             </Section> */}
 
-            <H1 uppercase fontBold>This week:</H1>
+            < H1 uppercase fontBold > This week:</H1 >
 
             <DashContent
                 key={Math.random() * 100}

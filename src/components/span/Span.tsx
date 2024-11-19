@@ -13,6 +13,7 @@ const Span: React.FC<Props> = (props: Props) => {
 
     if(props.textCenter) className += "text-center ";
     if(props.fontBold) className += "font-bold ";
+    if(props.location) className += "text-sm "
     if(props.location || props.textGray500) className += "text-gray-500 "
 
     return <span className={className.trim()}>{props.children}</span>
