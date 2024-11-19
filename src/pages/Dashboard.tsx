@@ -106,10 +106,6 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-        console.log("DATA ATUAL: ", currentDate);
-        console.log("ESTADO: SELECTED MONTH ", selectedMonth)
-        console.log("ESTADO: SELECTED YEAR ", selectedYear)
-
         const compareMonth = (currentDate.getMonth() + 1) === Number(selectedMonth);
         const compareYear = (currentDate.getFullYear()) === Number(selectedYear);
 
