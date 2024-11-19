@@ -1,26 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Section from "../components/section/Section";
 import H1 from "../components/h1/H1";
-import TestImage from "../assets/images/test.jpg"
 import Img from "../components/img/Img";
 import A from "../components/a/A";
 import Span from "../components/span/Span";
-import PieChart from "../components/chart/PieChart";
 import H5 from "../components/h5/H5";
 import DashContent from "../components/dashboard/DashContent";
 import api from '../api/constants'
 import Button from "../components/button/Button";
-import Label from "../components/label/Label";
 import constants from "../common/constants";
 import Select from "../components/select/Select";
-import { info } from "console";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-
-
-interface YearSelectProps {
-    onChange: (year: number) => void;
-}
+import Divider from "../components/div/Div";
 
 interface Club {
     id: number;
@@ -49,9 +41,11 @@ interface Bikes {
 const Dashboard = () => {
     console.log("API: ", api.activitiesLastWeek)
     const infoUser = api.infoAfterLogin;
+    /*
     const existsDataLastWeek = Array.isArray(api.activitiesLastWeek);
     const existsDataLastFourWeeks = Array.isArray(api.activitiesLastFourWeeks);
     const existsDataCurrentYear = Array.isArray(api.activitiesAllYear);
+    */
 
     // Dropdown of events
     const [isBikesOpen, setIsBikesOpen] = useState<boolean>(false);
@@ -74,7 +68,7 @@ const Dashboard = () => {
     const [selectedMonth, setSelectedMonth] = useState<string>((currentDate.getMonth() + 1).toString().padStart(2, '0'));
     const [selectedYear, setSelectedYear] = useState<number>(currentDate.getFullYear());
 
-    const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
+    //const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
     const years = Array.from({ length: selectedYear - 2019 + 1 }, (_, i) => selectedYear - i);
 
     const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -86,11 +80,11 @@ const Dashboard = () => {
         setSelectedYear(newYear);
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedYear = Number(event.target.value);
-        setSelectedYear(selectedYear);
-        //onChange(selectedYear);
-    };
+    // const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const selectedYear = Number(event.target.value);
+    //     setSelectedYear(selectedYear);
+    //     //onChange(selectedYear);
+    // };
 
     // Choose an option when click
     const renderDateByOption = (type: string) => {
@@ -104,108 +98,95 @@ const Dashboard = () => {
     return (
         <>
             <Section flex flexCol sectionInfos gap>
-                <div className="flex justify-between">
+                <Divider flex justifyBetween>
                     <H1 uppercase fontBold>Athlete data</H1>
                     <A textOrange text="View on Strava" href={`https://www.strava.com/athletes/${infoUser.id}`} />
-                </div>
+                </Divider>
 
-                <div className="flex xs:flex-row w-full gap-2">
-                    <div className="flex xs:w-3/4 md:w-1/4 xs:justify-center">
+                <Divider flex flexRowMobileScreen widthFull gap2>
+                    <Divider flex width75PercentMobileScreen width25PercentMediumScreen justifyCenterMobileScreen>
                         <figure className="w-full">
                             <Img image={infoUser.profile} alt="profile-image" />
                         </figure>
-                    </div>
-                    <div className="flex flex-col">
-                        <div className="flex">
-                            <div className="flex flex-1">
+                    </Divider>
+                    <Divider flex flexCol>
+                        <Divider flex>
+                            <Divider flex flex1>
                                 <Span fontBold>{infoUser.firstname} {infoUser.lastname}</Span>
-                            </div>
-                        </div>
-                        <div className="flex">
+                            </Divider>
+                        </Divider>
+                        <Divider flex>
                             <Span location>{infoUser.city}, {infoUser.state}, {infoUser.country}</Span>
-                        </div>
-                        <div className="flex">
-                            <div className="flex gap-3">
-                                <div className="flex gap-x-2">
+                        </Divider>
+                        <Divider flex>
+                            <Divider flex gap3>
+                                <Divider flex gapX2>
                                     <Span textGray500>Followers</Span>
                                     <Span fontBold>{infoUser.follower_count}</Span>
-                                </div>
+                                </Divider>
                                 <Span>|</Span>
-                                <div className="flex gap-x-2">
+                                <Divider flex gapX2>
                                     <Span textGray500>Following</Span>
                                     <Span fontBold>{infoUser.friend_count}</Span>
-                                </div>
-                            </div>
-                        </div>
+                                </Divider>
+                            </Divider>
+                        </Divider>
                         <Span>{infoUser.bio}</Span>
-                    </div>
-                </div>
+                    </Divider>
+                </Divider>
             </Section>
 
             {Array.isArray(infoUser.bikes) && infoUser.bikes.length > 0 && (
                 <Section flex flexCol sectionInfos>
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center">
+                    <Divider flex justifyBetween itemsCenter>
+                        <Divider flex itemsCenter>
                             <H1 fontBold>Bikes</H1>
-                        </div>
-                        <div className="flex gap-x-3">
+                        </Divider>
+                        <Divider flex gapX3>
                             <Span>({infoUser.bikes.length})</Span>
-                            <button
-                                onClick={toggleDropdownBikes}
-                                className="hover:underline fa-solid fa-chevron-up"
-                            >
+                            <Button type="button" onClick={toggleDropdownBikes} hoverUnderline>
                                 {isBikesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
-                            </button>
-                        </div>
-                    </div>
-                    <div
-                        className={`transition-all duration-300 ${isBikesOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-                            } overflow-hidden`}
-                    >
-                        <div className="flex xs:flex-col gap-2 mt-4">
-                            <div>
+                            </Button>
+                        </Divider>
+                    </Divider>
+                    <Divider dropdown transitionAll duration300 dropdownOpen={isBikesOpen} overflowHidden>
+                        <Divider flex flexColMobileScreen gap2 marginTop4>
+                            <Divider flex flexCol>
                                 {infoUser.bikes.map((element: Bikes, key: number) => {
                                     return <article className="flex justify-between" key={key}>
                                         <Span>{element.name}</Span>
                                         <Span>{element.distance.toLocaleString("pt-br")} km</Span>
                                     </article>
                                 })}
-                            </div>
-                        </div>
-                    </div>
+                            </Divider>
+                        </Divider>
+                    </Divider>
                 </Section>
             )}
 
             {Array.isArray(infoUser.clubs) && infoUser.clubs.length > 0 && (
                 <Section flex flexCol sectionInfos>
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center">
+                    <Divider flex justifyBetween itemsCenter>
+                        <Divider flex itemsCenter>
                             <H1 fontBold>Clubs</H1>
-                        </div>
-                        <div className="flex gap-x-3">
+                        </Divider>
+                        <Divider flex gapX3>
                             <Span>({infoUser.clubs.length})</Span>
-                            <button
-                                onClick={toggleDropdownClub}
-                                className="hover:underline fa-solid fa-chevron-up"
-                            >
+                            <Button type="button" onClick={toggleDropdownClub} hoverUnderline>
                                 {isClubOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
-                            </button>
-                        </div>
-
-                    </div>
-                    <div
-                        className={`transition-all duration-300 ${isClubOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-                            } overflow-hidden`}
-                    >
-                        <div className="flex xs:flex-col gap-2 mt-4">
+                            </Button>
+                        </Divider>
+                    </Divider>
+                    <Divider dropdown transitionAll duration300 dropdownOpen={isClubOpen} overflowHidden>
+                        <Divider flex flexColMobileScreen gap2 marginTop4>
                             {infoUser.clubs.map((element: Club, key: number) => (
                                 <article className="flex justify-between gap-2" key={key}>
-                                    <div className="flex flex-col xs:w-1/4">
+                                    <Divider flex flexCol width25PercentMobileScreen>
                                         <figure className="w-full">
                                             <Img image={element.profile} alt="club-image" />
                                         </figure>
-                                    </div>
-                                    <div className="flex flex-col xs:w-3/4">
+                                    </Divider>
+                                    <Divider flex flexCol width75PercentMobileScreen>
                                         <H5 fontBold>{element.name}</H5>
                                         <Span location>
                                             {element.city}, {element.state}, {element.country}
@@ -215,53 +196,49 @@ const Dashboard = () => {
                                             textOrange
                                             text="View on Strava"
                                         />
-                                    </div>
+                                    </Divider>
                                 </article>
                             ))}
-                        </div>
-                    </div>
-                </Section>
+                        </Divider>
+                    </Divider>
+                </Section >
             )}
 
-            {Array.isArray(infoUser.shoes) && infoUser.shoes.length > 0 && (
-                <Section flex flexCol sectionInfos>
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center">
-                            <H1 fontBold>Shoes</H1>
-                        </div>
-                        <div className="flex gap-x-3">
-                            <Span>({infoUser.shoes.length})</Span>
-                            <button
-                                onClick={toggleDropdownShoes}
-                                className="hover:underline fa-solid fa-chevron-up"
-                            >
-                                {isShoesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
-                            </button>
-                        </div>
-                    </div>
-                    <div
-                        className={`transition-all duration-300 ${isShoesOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-                            } overflow-hidden`}
-                    >
-                        <div className="flex xs:flex-col gap-2 mt-4">
-                            <div>
-                                {infoUser.shoes.map((element: Shoes, key: number) => {
-                                    return <article className="flex justify-between" key={key}>
-                                        <Span>{element.name}{element.retired ? " (retired)" : ""}</Span>
-                                        <Span>{element.converted_distance.toLocaleString("pt-br")} km</Span>
-                                    </article>
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                </Section>
-            )}
+            {
+                Array.isArray(infoUser.shoes) && infoUser.shoes.length > 0 && (
+                    <Section flex flexCol sectionInfos>
+                        <Divider flex justifyBetween itemsCenter>
+                            <Divider flex itemsCenter>
+                                <H1 fontBold>Shoes</H1>
+                            </Divider>
+                            <Divider flex gapX3>
+                                <Span>({infoUser.shoes.length})</Span>
+                                <Button type="button" onClick={toggleDropdownShoes} hoverUnderline>
+                                    {isShoesOpen ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+                                </Button>
+                            </Divider>
+                        </Divider>
+                        <Divider dropdown transitionAll duration300 dropdownOpen={isShoesOpen} overflowHidden>
+                            <Divider flex flexColMobileScreen gap2 marginTop4>
+                                <Divider>
+                                    {infoUser.shoes.map((element: Shoes, key: number) => {
+                                        return <article className="flex justify-between" key={key}>
+                                            <Span>{element.name}{element.retired ? " (retired)" : ""}</Span>
+                                            <Span>{element.converted_distance.toLocaleString("pt-br")} km</Span>
+                                        </article>
+                                    })}
+                                </Divider>
+                            </Divider>
+                        </Divider>
+                    </Section >
+                )
+            }
 
             <Section flex flexCol sectionInfos>
-                <div className="flex justify-between items-center">
+                <Divider flex justifyBetween itemsCenter>
                     <H1 fontBold>Physical activities</H1>
-                    <div className="flex gap-x-2 text-center">
-                        <div className="flex flex-col">
+                    <Divider flex gapX2 textCenter>
+                        <Divider flex flexCol>
                             <Select
                                 onChange={handleMonthChange}
                                 value={selectedMonth}
@@ -272,8 +249,8 @@ const Dashboard = () => {
                                     </option>
                                 ))}
                             </Select>
-                        </div>
-                        <div className="flex flex-col">
+                        </Divider>
+                        <Divider flex flexCol>
                             <Select
                                 onChange={handleYearChange}
                                 value={selectedYear.toString()}
@@ -284,48 +261,48 @@ const Dashboard = () => {
                                     </option>
                                 ))}
                             </Select>
-                        </div>
-                    </div>
-                </div>
+                        </Divider>
+                    </Divider>
+                </Divider>
 
-                <div className="flex flex-col">
-                    <div className="flex flex-wrap justify-between w-full text-center">
+                <Divider flex flexCol>
+                    <Divider flex flexWrap justifyBetween widthFull textCenter>
                         <Button type="button" onClick={() => renderDateByOption("week")} width25Percent hoverGray300>
-                            <div className="flex flex-col">
+                            <Divider flex flexCol>
                                 <Span textGray500>This week</Span>
                                 <Span fontBold>{api.activitiesLastWeek.length}</Span>
-                            </div>
+                            </Divider>
                         </Button>
 
                         <Button type="button" onClick={() => renderDateByOption("fourWeeks")} width25Percent hoverGray300>
-                            <div className="flex flex-col">
+                            <Divider flex flexCol>
                                 <Span textGray500>Last 4 weeks</Span>
                                 <Span fontBold>{api.activitiesLastFourWeeks.length}</Span>
-                            </div>
+                            </Divider>
                         </Button>
 
                         <Button type="button" onClick={() => renderDateByOption("fourYears")} width25Percent hoverGray300>
-                            <div className="flex flex-col">
+                            <Divider flex flexCol>
                                 <Span textGray500>This year</Span>
                                 <Span fontBold>{api.activitiesAllYear.length}</Span>
-                            </div>
+                            </Divider>
                         </Button>
 
                         <Button type="button" onClick={() => renderDateByOption("sinceRegister")} width25Percent hoverGray300>
-                            <div className="flex flex-col">
+                            <Divider flex flexCol>
                                 <Span textGray500>Since register</Span>
                                 <Span fontBold>180</Span>
-                            </div>
+                            </Divider>
                         </Button>
-                    </div>
-                </div>
+                    </Divider>
+                </Divider>
             </Section >
 
             {/* <Section flex flex1 flexCol itemsCenter justifyCenter sectionInfos gap>
                 Exercise Activity Data not found!
             </Section> */}
 
-            < H1 uppercase fontBold > This week:</H1 >
+            <H1 uppercase fontBold> This week:</H1 >
 
             <DashContent
                 key={Math.random() * 100}

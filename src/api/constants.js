@@ -103,7 +103,13 @@ const infoAfterLogin = {
     ],
     "postable_clubs_count": 2,
     "ftp": null,
-    "bikes": [],
+    "bikes": [{
+        "id": "b12345678987655",
+        "primary": true,
+        "name": "EMC",
+        "resource_state": 2,
+        "distance": 0
+    }],
     "shoes": [
         {
             "id": "g14820890",

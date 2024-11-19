@@ -7,6 +7,7 @@ interface Props {
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     width25Percent?: boolean;
     hoverGray300?: boolean;
+    hoverUnderline?: boolean;
 }
 
 const Button: React.FC<Props> = (props: Props) => {
@@ -15,6 +16,7 @@ const Button: React.FC<Props> = (props: Props) => {
     if(props.textCenter) className += "text-center ";
     if(props.width25Percent) className += "w-1/4 ";
     if(props.hoverGray300) className += "hover:bg-gray-300 "
+    if(props.hoverUnderline) className += "hover:underline "
 
     return <button className={className.trim()} onClick={props.onClick}>{props.children}</button>
 }
