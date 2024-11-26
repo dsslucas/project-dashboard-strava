@@ -314,7 +314,7 @@ const Dashboard = () => {
                 key={Math.random() * 100}
                 title="Running"
                 counterActivities={8}
-                pieChart={true}
+                barChart={true}
                 contentData={
                     {
                         resume: [{
@@ -353,7 +353,7 @@ const Dashboard = () => {
                 key={Math.random() * 100}
                 title="Swimming"
                 counterActivities={6}
-                pieChart={true}
+                barChart={true}
                 contentData={
                     {
                         resume: [],
@@ -382,7 +382,7 @@ const Dashboard = () => {
                 key={Math.random() * 100}
                 title="Cycling"
                 counterActivities={3}
-                pieChart={false}
+                barChart={false}
                 contentData={
                     {
                         resume: [{
@@ -422,7 +422,7 @@ const Dashboard = () => {
                 key={Math.random() * 100}
                 title="Other"
                 counterActivities={7}
-                pieChart={false}
+                barChart={false}
                 contentData={
                     {
                         resume: [{
@@ -502,7 +502,7 @@ const Dashboard = () => {
             {/* <DashContent
                 title="Other activities"
                 counterActivities={2}
-                pieChart={false}
+                barChart={false}
             /> */}
         </>
     );

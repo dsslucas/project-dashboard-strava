@@ -20,7 +20,7 @@ const PieChart: React.FC<Props> = (props: Props) => {
                 'rgb(54, 162, 235)',
             ],
             hoverOffset: 4
-        }]
+        }]        
     };
 
     const chartOptions = {
@@ -35,7 +35,7 @@ const PieChart: React.FC<Props> = (props: Props) => {
                     }
                 }
             }
-        },
+        }        
     }
 
     return <Pie

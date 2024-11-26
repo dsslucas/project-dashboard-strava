@@ -28,6 +28,7 @@ interface Props {
     width25PercentMediumScreen?: boolean;
     widthFull?: boolean;
 
+    marginAuto?: boolean;
     marginTop4?: boolean;
 
     dropdown?: boolean;
@@ -35,6 +36,8 @@ interface Props {
     duration300?: boolean;
     dropdownOpen?: boolean;
     overflowHidden?: boolean;
+
+    key?: string | number;
 }
 
 const Divider: React.FC<Props> = (props: Props) => {
@@ -49,11 +52,15 @@ const Divider: React.FC<Props> = (props: Props) => {
     if (props.width25PercentMobileScreen) className += "xs:w-1/4 ";
     if (props.width75PercentMobileScreen) className += "xs:w-3/4 ";
     if (props.width25PercentMediumScreen) className += "md:w-1/4 ";
+    if (props.widthFull) className += "w-full ";
+    if (props.justifyCenter) className += "justify-center ";
     if (props.justifyCenterMobileScreen) className += "xs:justify-center ";
+    if (props.itemsCenter) className += "items-center ";
     if (props.gap2) className += "gap-2 ";
     if (props.gap3) className += "gap-3 ";
     if (props.gapX2) className += "gap-x-2 ";
     if (props.gapX3) className += "gap-x-3 ";
+    if (props.marginAuto) className += "margin-auto ";
     if (props.marginTop4) className += "mt-4 ";
     if (props.dropdown) {
         if (props.transitionAll) className += "transition-all ";
@@ -65,7 +72,7 @@ const Divider: React.FC<Props> = (props: Props) => {
         if (props.overflowHidden) className += "overflow-hidden";
     }
 
-    return <div className={className.trim()}>{props.children}</div>
+    return <div className={className.trim()} key={props.key || 0}>{props.children}</div>
 }
 
 export default Divider;
