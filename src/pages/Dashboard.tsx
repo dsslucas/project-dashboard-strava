@@ -13,7 +13,7 @@ import Select from "../components/select/Select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Divider from "../components/div/Div";
-import getAllActivities from "../api/activities";
+import activitiesService from "../api/activities";
 
 interface Club {
     id: number;
@@ -96,7 +96,7 @@ const Dashboard = () => {
 
         setIsMonthYearCurrent(compareMonth && compareYear);
 
-        getAllActivities(Number(selectedMonth), Number(selectedYear), compareMonth && compareYear);
+        activitiesService().getAllActivities(Number(selectedMonth), Number(selectedYear), compareMonth && compareYear);
     }, [selectedMonth, selectedYear]);
 
     return (
